@@ -169,6 +169,24 @@
 
 ## Spring Web Sockets
 
+## 소개
+
+1. Web Socket이란 사용자의 브라우저와 서버 사이의 인터렉티브 통신 세션을 설정할 수 있게 하는 고급 기술이다.
+    - [Mozilla Web Socket](https://developer.mozilla.org/ko/docs/WebSockets)
+2. Socket over HTTP
+    - `ws://`: HTTP 기반
+    - `wss://`: HTTPS 기반
+3. Full duplex, 2-way communication
+    - 양쪽이 강하게 `Long Polling` 되어 있다.
+        - 서버와 클라이언트가 끊어짐 없이 계속 연결된 상태
+4. Polling, Long Polling
+    - Polling: 자신의 요청에 의한 응답이 와도 끊어지지 않음
+    - Long Polling: 양쪽 모두를 강하게 연결하고 있는 상태
+5. Auto-recoonect with intelligence
+    - 끊어지면 다시 연결
+        - 서버 또는 클라이언트에서 설정해야 한다.
+          ![웹 소켓](./images/socket/socket01.png)
+
 ### 스프링 소켓 종류
 
 #### WebSocket
@@ -176,6 +194,8 @@
 1. W3C 표준
 2. Socket Over HTTP
     - 웹 상에 존재
+    - `ws://`: HTTP 기반
+    - `wss://`: HTTPS 기반
 3. IE 10+ (Can use pure WebSocket javascript library)
 
 #### SockJS
@@ -198,3 +218,19 @@
    ```html
    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
    ```
+
+### 웹 소켓 사용을 위한 라이브러리 설정
+
+```xml
+<dependency>
+    <groupId>javax.websocket</groupId>
+    <artifactId>javax.websocket-api</artifactId>
+    <version>1.1</version>
+</dependency>
+
+<dependency>
+   <groupId>org.springframework</groupId>
+   <artifactId>spring-websocket</artifactId>
+   <version>${spring-version}</version>
+</dependency>
+```
