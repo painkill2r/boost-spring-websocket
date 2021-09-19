@@ -55,31 +55,6 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
                 accessClient.sendMessage(new TextMessage(loginUser.getName() + ": " + message.getPayload()));
             }
         }
-
-        /*
-        //protocol: COMMAND, 댓글 작성자, 게시글 작성자, 게시글 번호
-        String msg = message.getPayload();
-
-        if (msg != null && !"".equals(msg)) {
-            String[] strs = msg.split(",");
-
-            if (strs != null && strs.length == 4) {
-                String command = strs[0];
-                String commentWriter = strs[1];
-                String postWriter = strs[2];
-                String no = strs[3];
-
-
-                //특정 게시글 작성자에게만 메시지 발송
-                WebSocketSession postWriterSession = userSessions.get(postWriter);
-
-                if ("comment".equals(command) && postWriterSession != null) {
-                    TextMessage sendMsg = new TextMessage(commentWriter + "님이 " + no + "번 글에 댓글을 작성했습니다.");
-                    postWriterSession.sendMessage(sendMsg);
-                }
-            }
-        }
-        */
     }
 
     /**

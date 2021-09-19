@@ -25,6 +25,7 @@ ${sessionScope.loginUser.name}님 채팅방 접속을 환영합니다.
 <div class="chat">
     <div class="chat_list" id="chatList"></div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.2/sockjs.min.js"></script>
 <script type="text/javascript">
     document.addEventListener('keydown', function (event) {
         if (event.keyCode === 13) {
@@ -52,16 +53,16 @@ ${sessionScope.loginUser.name}님 채팅방 접속을 환영합니다.
     });
 
     function connect() {
-        console.log('INFO: Web socket Connection...');
+        console.log('INFO: Web socket(Use SockJS) Connection...');
 
-        var ws = new WebSocket('ws://<%= url %>/chatting'); //브라우저에서 지원하는 WebSocket(단, IE는 10이상 부터)
+        var sock = new SockJS('http://<%= url %>/chatting');
 
-        socket = ws;
+        socket = sock;
 
-        ws.onopen = function () {
+        sock.onopen = function () {
             console.log('INFO: Connection opened.');
 
-            ws.onmessage = function (evt) {
+            sock.onmessage = function (evt) {
                 console.log('Received message: ' + evt.data);
 
                 var chatList = document.getElementById('chatList');
@@ -71,19 +72,15 @@ ${sessionScope.loginUser.name}님 채팅방 접속을 환영합니다.
 
                 chatList.appendChild(p);
             };
-        }
 
-        ws.onclose = function (evt) {
-            console.log('INFO: Connection closed.');
+            sock.onclose = function () {
+                console.log('INFO: Connection closed.');
 
-            //retry
-            setTimeout(function () {
-                connect();
-            }, 1000);
-        };
-
-        ws.onerror = function (err) {
-            console.log(err);
+                //retry
+                setTimeout(function () {
+                    connect();
+                }, 1000);
+            };
         };
     }
 </script>
