@@ -218,19 +218,30 @@
    ```html
    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
    ```
+4. WebSocket, SockJS 방식과는 다르게 MessageHandler를 따로 구현하지 않는다.
+    - 기본적으로 `@Controller를 이용해서 처리`하기 때문에 Web MVC 방식과 거의 유사한 형태의 개발을 진행할 수 있다.
 
 ### 웹 소켓 사용을 위한 라이브러리 설정
 
 ```xml
-<dependency>
-    <groupId>javax.websocket</groupId>
-    <artifactId>javax.websocket-api</artifactId>
-    <version>1.1</version>
-</dependency>
+<dependencies>
+    <dependency>
+        <groupId>javax.websocket</groupId>
+        <artifactId>javax.websocket-api</artifactId>
+        <version>1.1</version>
+    </dependency>
 
-<dependency>
-   <groupId>org.springframework</groupId>
-   <artifactId>spring-websocket</artifactId>
-   <version>${spring-version}</version>
-</dependency>
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-websocket</artifactId>
+        <version>${spring-version}</version>
+    </dependency>
+
+    <!-- STOMP 메시징 사용을 위한 라이브러리 설정 -->
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-messaging</artifactId>
+        <version>4.3.25.RELEASE</version>
+    </dependency>
+</dependencies>
 ```

@@ -26,6 +26,7 @@ ${sessionScope.loginUser.name}님 채팅방 접속을 환영합니다.
     <div class="chat_list" id="chatList"></div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.2/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <script type="text/javascript">
     document.addEventListener('keydown', function (event) {
         if (event.keyCode === 13) {
@@ -44,9 +45,6 @@ ${sessionScope.loginUser.name}님 채팅방 접속을 환영합니다.
         var _message = document.getElementById('message');
         var message = _message.value;
 
-        if (socket.readyState !== 1)
-            return;
-
         socket.send(message);
 
         _message.value = '';
@@ -55,14 +53,19 @@ ${sessionScope.loginUser.name}님 채팅방 접속을 환영합니다.
     function connect() {
         console.log('INFO: Web socket(Use SockJS) Connection...');
 
-        var sock = new SockJS('http://<%= url %>/chatting');
+        var sock = new SockJS('http://<%= url %>${pageContext.request.contextPath}/stomp'); //EndPoint
+        var client = Stomp.over(sock); //SockJS 위에서 동작
 
-        socket = sock;
+        socket = client;
 
-        sock.onopen = function () {
+        client.connect({}, function () {
             console.log('INFO: Connection opened.');
 
-            sock.onmessage = function (evt) {
+            //Controller @MessageMapping, header, message(자유형식)
+            client.send('${pageContext.request.contextPath}/sock/message/send', {}, 'message: Hi!');
+
+            //해당 토픽 구독
+            client.subscribe('${pageContext.request.contextPath}/sock/message/topic/message', function (evt) {
                 console.log('Received message: ' + evt.data);
 
                 var chatList = document.getElementById('chatList');
@@ -71,17 +74,8 @@ ${sessionScope.loginUser.name}님 채팅방 접속을 환영합니다.
                 p.append(evt.data)
 
                 chatList.appendChild(p);
-            };
-
-            sock.onclose = function () {
-                console.log('INFO: Connection closed.');
-
-                //retry
-                setTimeout(function () {
-                    connect();
-                }, 1000);
-            };
-        };
+            });
+        });
     }
 </script>
 </body>
