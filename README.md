@@ -167,4 +167,34 @@
 3. Deployment, Application context 설정
    ![IntelliJ > New Project](images/settings/tomcat/tomcat_setup03.png)
 
-## Web Socket
+## Spring Web Sockets
+
+### 스프링 소켓 종류
+
+#### WebSocket
+
+1. W3C 표준
+2. Socket Over HTTP
+    - 웹 상에 존재
+3. IE 10+ (Can use pure WebSocket javascript library)
+
+#### SockJS
+
+1. 브라우저의 Socket을 사용
+2. Like socket.io(NodeJS) Polyfill
+3. IE 8+ (Use sockjs-client library)
+    - `CDN`
+   ```html
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.2/sockjs.min.js"></script>
+   ```
+
+#### STOMP(Streaming Text Oriented Messaging Protocol): 토픽 구독 방식
+
+1. Spring Only, Publish(topic/queue) & Subscribe
+2. Sub protocol over SockJS
+    - Custom foramt for message
+3. Use stomp js library
+    - `CDN`
+   ```html
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+   ```
