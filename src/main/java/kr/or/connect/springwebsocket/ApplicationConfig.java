@@ -9,6 +9,6 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 @ComponentScan(basePackages = {"kr.or.connect.springwebsocket.service", "kr.or.connect.springwebsocket.dao"})
-@Import({DBConfig.class})
+@Import({DBConfig.class, WebSocketConfig.class})
 public class ApplicationConfig {
 }
