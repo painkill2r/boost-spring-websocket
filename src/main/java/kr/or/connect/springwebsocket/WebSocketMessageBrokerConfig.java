@@ -20,6 +20,6 @@ public class WebSocketMessageBrokerConfig extends AbstractWebSocketMessageBroker
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         registry.setApplicationDestinationPrefixes("/"); //Send URL에 대한 전역 prefix 설정
-        registry.enableSimpleBroker("/sock/message/topic"); //Subscribe에 대한 전역 prefix를 설정
+        registry.enableSimpleBroker("/topic"); //Subscribe에 대한 전역 prefix를 설정
     }
 }

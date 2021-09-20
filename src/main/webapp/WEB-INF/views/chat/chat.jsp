@@ -44,8 +44,13 @@ ${sessionScope.loginUser.name}님 채팅방 접속을 환영합니다.
 
         var _message = document.getElementById('message');
         var message = _message.value;
+        var json = {
+            id: ${sessionScope.loginUser.id},
+            name: ${sessionScope.loginUser.name},
+            message: message
+        }
 
-        socket.send(message);
+        send(JSON.stringify(json));
 
         _message.value = '';
     });
@@ -53,29 +58,34 @@ ${sessionScope.loginUser.name}님 채팅방 접속을 환영합니다.
     function connect() {
         console.log('INFO: Web socket(Use SockJS) Connection...');
 
-        var sock = new SockJS('http://<%= url %>${pageContext.request.contextPath}/stomp'); //EndPoint
+        var sock = new SockJS('/stomp'); //EndPoint
         var client = Stomp.over(sock); //SockJS 위에서 동작
 
         socket = client;
 
         client.connect({}, function () {
-            console.log('INFO: Connection opened.');
+            console.log('STOMP protocol connection');
 
-            //Controller @MessageMapping, header, message(자유형식)
-            client.send('${pageContext.request.contextPath}/sock/message/send', {}, 'message: Hi!');
+            //토픽 구독
+            client.subscribe('/topic/message', function (message) {
+                console.log('Received: ' + message);
 
-            //해당 토픽 구독
-            client.subscribe('${pageContext.request.contextPath}/sock/message/topic/message', function (evt) {
-                console.log('Received message: ' + evt.data);
-
+                var receivedData = JSON.parse(message);
                 var chatList = document.getElementById('chatList');
                 var p = document.createElement('p');
 
-                p.append(evt.data)
+                p.append(receivedData.id + ": " + receivedData.message)
 
                 chatList.appendChild(p);
             });
+        }, function (error) {
+            console.log('STOMP protocol error: ' + error);
         });
+    }
+
+    function send(data) {
+        //Controller @MessageMapping, header, message(자유형식)
+        socket.send('/send', {}, data);
     }
 </script>
 </body>
