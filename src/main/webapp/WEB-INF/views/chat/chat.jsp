@@ -70,7 +70,7 @@ ${sessionScope.loginUser.name}님 채팅방 접속을 환영합니다.
             client.subscribe('/topic/message', function (message) {
                 console.log('Received: ' + message);
 
-                var receivedData = JSON.parse(message);
+                var receivedData = JSON.parse(message.body);
                 var chatList = document.getElementById('chatList');
                 var p = document.createElement('p');
 
