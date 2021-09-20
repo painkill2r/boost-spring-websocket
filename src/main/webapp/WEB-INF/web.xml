@@ -34,7 +34,7 @@
         <!-- DispatcherServlet이 실행될 때 WebMvcContextConfiguration 설정 파일을 읽어 들여서 처리하도록 설정 -->
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>kr.or.connect.springwebsocket.WebMvcContextConfiguration</param-value>
+            <param-value>kr.or.connect.springwebsocket.WebMvcConfig</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
